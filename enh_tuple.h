@@ -25,6 +25,19 @@ template <size_t Index> struct GetterByIndex {
   }
 };
 
+template <typename Type> struct GetterByType {
+  template <size_t Index>
+  static constexpr const Type &
+  get_reference(const IndexedItem<Index, Type> &itm) {
+    return itm.value;
+  }
+
+  template <size_t Index>
+  static constexpr Type &get_reference(IndexedItem<Index, Type> &itm) {
+    return itm.value;
+  }
+};
+
 template <typename, typename...> struct TupleBase;
 
 template <std::size_t... Is, typename... Types>
@@ -65,6 +78,16 @@ constexpr const auto &get(const enh_inh::Tuple<Types...> &t) {
 template <size_t index, typename... Types>
 constexpr auto &get(enh_inh::Tuple<Types...> &t) {
   return enh_inh::impl::GetterByIndex<index>::get_reference(t);
+}
+
+template <typename Type, typename... Types>
+constexpr const auto &get(const enh_inh::Tuple<Types...> &t) {
+  return enh_inh::impl::GetterByType<Type>::get_reference(t);
+}
+
+template <typename Type, typename... Types>
+constexpr auto &get(enh_inh::Tuple<Types...> &t) {
+  return enh_inh::impl::GetterByType<Type>::get_reference(t);
 }
 
 } // namespace std

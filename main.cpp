@@ -2,7 +2,7 @@
 #include "enh_tuple.h"
 #include <iostream>
 
-struct S{
+struct S {
   int num;
 };
 

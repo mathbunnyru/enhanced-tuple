@@ -8,18 +8,19 @@ template <typename... Types> struct Tuple;
 
 namespace impl {
 
-template <typename ItemType, std::size_t /* RestArgsNum */> struct IndexedItem {
-  ItemType value;
+template <typename Type, std::size_t /* RestArgsNum */> struct IndexedItem {
+  Type value;
 };
 
 template <size_t Index> struct GetterByIndex {
-  template <typename T>
-  static constexpr const T &get_reference(const IndexedItem<T, Index> &itm) {
+  template <typename Type>
+  static constexpr const Type &
+  get_reference(const IndexedItem<Type, Index> &itm) {
     return itm.value;
   }
 
-  template <typename T>
-  static constexpr T &get_reference(IndexedItem<T, Index> &itm) {
+  template <typename Type>
+  static constexpr Type &get_reference(IndexedItem<Type, Index> &itm) {
     return itm.value;
   }
 };

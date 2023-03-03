@@ -25,5 +25,5 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -GNinja
-          ninja
+          cmake ..
+          make

@@ -44,7 +44,7 @@ template <std::size_t... Is, typename... Types>
 struct TupleBase<std::index_sequence<Is...>, Types...>
     : IndexedItem<Is, Types>... {
   template <typename... Us>
-  TupleBase(Us... us) : IndexedItem<Is, Types>{us}... {}
+  TupleBase(Us &&...us) : IndexedItem<Is, Types>{std::forward<Us>(us)}... {}
 };
 
 } // namespace impl

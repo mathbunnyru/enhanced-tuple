@@ -46,8 +46,8 @@ template <typename Head, typename... Tail>
 struct Tuple<Head, Tail...> : public impl::IndexedItem<sizeof...(Tail), Head>,
                               Tuple<Tail...> {
   Tuple(Head head, Tail... tail)
-      : impl::IndexedItem<sizeof...(Tail), Head>{head}, Tuple<Tail...>(
-                                                            tail...) {}
+      : impl::IndexedItem<sizeof...(Tail), Head>{head},
+        Tuple<Tail...>(tail...) {}
 
   Tuple() : impl::IndexedItem<sizeof...(Tail), Head>(), Tuple<Tail...>() {}
 };

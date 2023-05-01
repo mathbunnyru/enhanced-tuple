@@ -8,6 +8,10 @@ struct S {
   int num;
 };
 
+struct Empty {};
+
+struct Empty2 {};
+
 template <template <typename... Types> class TupleType>
 void test_tuple(std::string_view description) {
   std::cout << std::string(40, '=') << "\ntesting: " << description << '\n';
@@ -23,6 +27,10 @@ void test_tuple(std::string_view description) {
   std::get<0>(ref_t) = 100;
   std::get<double &>(ref_t) = 0.7;
   std::cout << i << ' ' << j << '\n';
+
+  TupleType<Empty, Empty2, Empty, Empty, Empty2> empty{
+      Empty{}, Empty2{}, Empty{}, Empty{}, Empty2{}};
+  std::cout << sizeof(empty) << '\n';
 }
 
 int main() {
@@ -30,5 +38,5 @@ int main() {
 
   test_tuple<enh_inh::Tuple>("enh_inh::Tuple");
 
-  test_tuple<enh_rec::Tuple>("enh_inh::Tuple");
+  test_tuple<enh_rec::Tuple>("enh_rec::Tuple");
 }

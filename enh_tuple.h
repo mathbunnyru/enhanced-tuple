@@ -9,7 +9,7 @@ template <typename... Types> struct Tuple;
 namespace impl {
 
 template <std::size_t /* Index */, typename Type> struct IndexedItem {
-  Type value;
+  [[no_unique_address]] Type value;
 };
 
 template <size_t Index> struct GetterByIndex {

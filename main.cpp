@@ -12,6 +12,18 @@ struct Empty {};
 
 struct Empty2 {};
 
+#pragma pack(push, 1)
+
+struct Packed {
+  char arr[6];
+  uint64_t num;
+  char some_char;
+};
+
+#pragma pack(pop)
+
+static_assert(sizeof(Packed) == 15);
+
 template <template <typename... Types> class TupleType>
 void test_tuple(std::string_view description) {
   std::cout << std::string(40, '=') << "\ntesting: " << description << '\n';
@@ -31,6 +43,8 @@ void test_tuple(std::string_view description) {
   TupleType<Empty, Empty2, Empty, Empty, Empty2> empty{
       Empty{}, Empty2{}, Empty{}, Empty{}, Empty2{}};
   std::cout << sizeof(empty) << '\n';
+
+  std::cout << sizeof(TupleType<Packed, char, Packed, char>) << '\n';
 }
 
 int main() {

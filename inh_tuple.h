@@ -38,8 +38,9 @@ template <typename Type> struct GetterByType {
 template <typename, typename...> struct TupleBase;
 
 template <std::size_t... Is, typename... Types>
-struct TupleBase<std::index_sequence<Is...>, Types...>
-    : itm::IndexedItem<Is, Types>... {
+class TupleBase<std::index_sequence<Is...>, Types...>
+    : public itm::IndexedItem<Is, Types>... {
+public:
   template <typename... Us>
   TupleBase(Us &&...us)
       : itm::IndexedItem<Is, Types>{std::forward<Us>(us)}... {}
@@ -50,9 +51,9 @@ struct TupleBase<std::index_sequence<Is...>, Types...>
 template <> struct Tuple<> {};
 
 template <typename... Types>
-struct Tuple
-    : public impl::TupleBase<std::make_index_sequence<sizeof...(Types)>,
-                             Types...> {
+class Tuple : public impl::TupleBase<std::make_index_sequence<sizeof...(Types)>,
+                                     Types...> {
+public:
   Tuple(const Types &...items)
       : impl::TupleBase<std::make_index_sequence<sizeof...(Types)>, Types...>(
             items...) {}

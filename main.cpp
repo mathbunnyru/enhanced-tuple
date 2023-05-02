@@ -47,6 +47,14 @@ void test_tuple(std::string_view description) {
 
   TupleType<int> not_initialized;
   std::cout << std::get<int>(not_initialized) << '\n';
+
+  int x = 5;
+  int y = 10;
+  TupleType<int &> ref_x(x);
+  TupleType<int &> ref_y(y);
+  ref_x = ref_y;
+  std::get<int &>(ref_y) = 100;
+  std::cout << x << ' ' << y << '\n';
 }
 
 int main() {

@@ -43,20 +43,19 @@ class TupleBase<std::index_sequence<Is...>, Types...>
 public:
   template <typename... Us>
   TupleBase(Us &&...us)
-      : itm::IndexedItem<Is, Types>{std::forward<Us>(us)}... {}
+      : itm::IndexedItem<Is, Types>(std::forward<Us>(us))... {}
 
   TupleBase() = default;
 };
 
 } // namespace impl
 
-template <> struct Tuple<> {};
-
 template <typename... Types>
 class Tuple : public impl::TupleBase<std::make_index_sequence<sizeof...(Types)>,
                                      Types...> {
 public:
   Tuple(const Types &...items)
+    requires(sizeof...(Types) > 0)
       : impl::TupleBase<std::make_index_sequence<sizeof...(Types)>, Types...>(
             items...) {}
 

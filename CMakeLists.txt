@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.2)
 project(mamba)
 
 add_executable(main_tuple main.cpp)
-target_compile_features(main_tuple PUBLIC cxx_std_17)
+target_compile_features(main_tuple PUBLIC cxx_std_20)
 
 option(ENABLE_ASAN "Enable Address-Sanitizer" OFF)
 if(ENABLE_ASAN)

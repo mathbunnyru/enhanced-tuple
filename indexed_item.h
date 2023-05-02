@@ -11,15 +11,17 @@ template <std::size_t /* Index */, typename Type> struct IndexedItem {
 template <std::size_t Index, typename Type> struct IndexedItem<Index, Type &> {
   Type &value;
 
-  IndexedItem(const IndexedItem &) = default;
-  IndexedItem(IndexedItem &&) = default;
+  IndexedItem(Type &val) : value(val) {}
 
-  IndexedItem &operator=(const IndexedItem &rhs) {
+  constexpr IndexedItem(const IndexedItem &) = default;
+  constexpr IndexedItem(IndexedItem &&) = default;
+
+  constexpr IndexedItem &operator=(const IndexedItem &rhs) {
     value = rhs.value;
     return *this;
   }
 
-  IndexedItem &operator=(IndexedItem &&rhs) {
+  constexpr IndexedItem &operator=(IndexedItem &&rhs) {
     value = std::move(rhs.value);
     return *this;
   }

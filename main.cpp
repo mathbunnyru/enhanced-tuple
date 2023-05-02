@@ -39,9 +39,9 @@ void test_tuple(std::string_view description) {
   std::get<double &>(ref_t) = 0.7;
   std::cout << i << ' ' << j << '\n';
 
-  TupleType<Empty, Empty2, Empty, Empty, Empty2> empty{
+  TupleType<Empty, Empty2, Empty, Empty, Empty2> almost_empty{
       Empty{}, Empty2{}, Empty{}, Empty{}, Empty2{}};
-  std::cout << sizeof(empty) << '\n';
+  std::cout << sizeof(almost_empty) << '\n';
 
   std::cout << sizeof(TupleType<Packed, char, Packed, char>) << '\n';
 
@@ -55,6 +55,9 @@ void test_tuple(std::string_view description) {
   ref_x = ref_y;
   std::get<int &>(ref_y) = 100;
   std::cout << x << ' ' << y << '\n';
+
+  TupleType<> empty;
+  std::cout << std::tuple_size_v<typeof(empty)> << '\n';
 }
 
 int main() {

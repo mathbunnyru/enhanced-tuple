@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <utility>
 
-namespace enh_rec {
+namespace inh {
 
 template <typename... Types> struct Tuple;
 
@@ -35,50 +35,57 @@ template <typename Type> struct GetterByType {
   }
 };
 
+template <typename, typename...> struct TupleBase;
+
+template <std::size_t... Is, typename... Types>
+struct TupleBase<std::index_sequence<Is...>, Types...>
+    : itm::IndexedItem<Is, Types>... {
+  template <typename... Us>
+  TupleBase(Us &&...us)
+      : itm::IndexedItem<Is, Types>{std::forward<Us>(us)}... {}
+};
+
 } // namespace impl
 
 template <> struct Tuple<> {};
 
-template <typename Head, typename... Tail>
-struct Tuple<Head, Tail...> : public itm::IndexedItem<sizeof...(Tail), Head>,
-                              Tuple<Tail...> {
-  Tuple(Head head, Tail... tail)
-      : itm::IndexedItem<sizeof...(Tail), Head>{head}, Tuple<Tail...>(tail...) {
-  }
-
-  Tuple() : itm::IndexedItem<sizeof...(Tail), Head>(), Tuple<Tail...>() {}
+template <typename... Types>
+struct Tuple
+    : public impl::TupleBase<std::make_index_sequence<sizeof...(Types)>,
+                             Types...> {
+  Tuple(const Types &...items)
+      : impl::TupleBase<std::make_index_sequence<sizeof...(Types)>, Types...>(
+            items...) {}
 };
 
 template <typename... Types> Tuple(Types...) -> Tuple<Types...>;
 
-} // namespace enh_rec
+} // namespace inh
 
 namespace std {
 
-template <class... Types> struct tuple_size<enh_rec::Tuple<Types...>> {
+template <class... Types> struct tuple_size<inh::Tuple<Types...>> {
   static constexpr auto value = sizeof...(Types);
 };
 
 template <size_t index, typename... Types>
-constexpr const auto &get(const enh_rec::Tuple<Types...> &t) {
-  return enh_rec::impl::GetterByIndex<sizeof...(Types) - 1 -
-                                      index>::get_reference(t);
+constexpr const auto &get(const inh::Tuple<Types...> &t) {
+  return inh::impl::GetterByIndex<index>::get_reference(t);
 }
 
 template <size_t index, typename... Types>
-constexpr auto &get(enh_rec::Tuple<Types...> &t) {
-  return enh_rec::impl::GetterByIndex<sizeof...(Types) - 1 -
-                                      index>::get_reference(t);
+constexpr auto &get(inh::Tuple<Types...> &t) {
+  return inh::impl::GetterByIndex<index>::get_reference(t);
 }
 
 template <typename Type, typename... Types>
-constexpr const auto &get(const enh_rec::Tuple<Types...> &t) {
-  return enh_rec::impl::GetterByType<Type>::get_reference(t);
+constexpr const auto &get(const inh::Tuple<Types...> &t) {
+  return inh::impl::GetterByType<Type>::get_reference(t);
 }
 
 template <typename Type, typename... Types>
-constexpr auto &get(enh_rec::Tuple<Types...> &t) {
-  return enh_rec::impl::GetterByType<Type>::get_reference(t);
+constexpr auto &get(inh::Tuple<Types...> &t) {
+  return inh::impl::GetterByType<Type>::get_reference(t);
 }
 
 } // namespace std

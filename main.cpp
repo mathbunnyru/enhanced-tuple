@@ -1,5 +1,4 @@
-#include "enh_rec_tuple.h"
-#include "enh_tuple.h"
+#include "inh_tuple.h"
 #include <iostream>
 #include <string_view>
 #include <tuple>
@@ -50,7 +49,5 @@ void test_tuple(std::string_view description) {
 int main() {
   test_tuple<std::tuple>("std::tuple");
 
-  test_tuple<enh_inh::Tuple>("enh_inh::Tuple");
-
-  test_tuple<enh_rec::Tuple>("enh_rec::Tuple");
+  test_tuple<inh::Tuple>("inh::Tuple");
 }

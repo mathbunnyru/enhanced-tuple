@@ -1,4 +1,5 @@
 #pragma once
+#include "indexed_item.h"
 #include <cstddef>
 #include <utility>
 
@@ -8,19 +9,15 @@ template <typename... Types> struct Tuple;
 
 namespace impl {
 
-template <std::size_t /* Index */, typename Type> struct IndexedItem {
-  [[no_unique_address]] Type value;
-};
-
 template <size_t Index> struct GetterByIndex {
   template <typename Type>
   static constexpr const Type &
-  get_reference(const IndexedItem<Index, Type> &itm) {
+  get_reference(const itm::IndexedItem<Index, Type> &itm) {
     return itm.value;
   }
 
   template <typename Type>
-  static constexpr Type &get_reference(IndexedItem<Index, Type> &itm) {
+  static constexpr Type &get_reference(itm::IndexedItem<Index, Type> &itm) {
     return itm.value;
   }
 };
@@ -28,12 +25,12 @@ template <size_t Index> struct GetterByIndex {
 template <typename Type> struct GetterByType {
   template <size_t Index>
   static constexpr const Type &
-  get_reference(const IndexedItem<Index, Type> &itm) {
+  get_reference(const itm::IndexedItem<Index, Type> &itm) {
     return itm.value;
   }
 
   template <size_t Index>
-  static constexpr Type &get_reference(IndexedItem<Index, Type> &itm) {
+  static constexpr Type &get_reference(itm::IndexedItem<Index, Type> &itm) {
     return itm.value;
   }
 };
@@ -42,9 +39,10 @@ template <typename, typename...> struct TupleBase;
 
 template <std::size_t... Is, typename... Types>
 struct TupleBase<std::index_sequence<Is...>, Types...>
-    : IndexedItem<Is, Types>... {
+    : itm::IndexedItem<Is, Types>... {
   template <typename... Us>
-  TupleBase(Us &&...us) : IndexedItem<Is, Types>{std::forward<Us>(us)}... {}
+  TupleBase(Us &&...us)
+      : itm::IndexedItem<Is, Types>{std::forward<Us>(us)}... {}
 };
 
 } // namespace impl

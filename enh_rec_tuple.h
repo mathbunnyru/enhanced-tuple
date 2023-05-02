@@ -1,4 +1,5 @@
 #pragma once
+#include "indexed_item.h"
 #include <cstddef>
 #include <utility>
 
@@ -8,19 +9,15 @@ template <typename... Types> struct Tuple;
 
 namespace impl {
 
-template <std::size_t /* RestArgsNum */, typename Type> struct IndexedItem {
-  [[no_unique_address]] Type value;
-};
-
 template <size_t Index> struct GetterByIndex {
   template <typename Type>
   static constexpr const Type &
-  get_reference(const IndexedItem<Index, Type> &itm) {
+  get_reference(const itm::IndexedItem<Index, Type> &itm) {
     return itm.value;
   }
 
   template <typename Type>
-  static constexpr Type &get_reference(IndexedItem<Index, Type> &itm) {
+  static constexpr Type &get_reference(itm::IndexedItem<Index, Type> &itm) {
     return itm.value;
   }
 };
@@ -28,12 +25,12 @@ template <size_t Index> struct GetterByIndex {
 template <typename Type> struct GetterByType {
   template <size_t Index>
   static constexpr const Type &
-  get_reference(const IndexedItem<Index, Type> &itm) {
+  get_reference(const itm::IndexedItem<Index, Type> &itm) {
     return itm.value;
   }
 
   template <size_t Index>
-  static constexpr Type &get_reference(IndexedItem<Index, Type> &itm) {
+  static constexpr Type &get_reference(itm::IndexedItem<Index, Type> &itm) {
     return itm.value;
   }
 };
@@ -43,13 +40,13 @@ template <typename Type> struct GetterByType {
 template <> struct Tuple<> {};
 
 template <typename Head, typename... Tail>
-struct Tuple<Head, Tail...> : public impl::IndexedItem<sizeof...(Tail), Head>,
+struct Tuple<Head, Tail...> : public itm::IndexedItem<sizeof...(Tail), Head>,
                               Tuple<Tail...> {
   Tuple(Head head, Tail... tail)
-      : impl::IndexedItem<sizeof...(Tail), Head>{head},
-        Tuple<Tail...>(tail...) {}
+      : itm::IndexedItem<sizeof...(Tail), Head>{head}, Tuple<Tail...>(tail...) {
+  }
 
-  Tuple() : impl::IndexedItem<sizeof...(Tail), Head>(), Tuple<Tail...>() {}
+  Tuple() : itm::IndexedItem<sizeof...(Tail), Head>(), Tuple<Tail...>() {}
 };
 
 template <typename... Types> Tuple(Types...) -> Tuple<Types...>;

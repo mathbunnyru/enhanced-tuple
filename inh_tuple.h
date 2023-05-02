@@ -44,6 +44,8 @@ public:
   template <typename... Us>
   TupleBase(Us &&...us)
       : itm::IndexedItem<Is, Types>{std::forward<Us>(us)}... {}
+
+  TupleBase() = default;
 };
 
 } // namespace impl
@@ -57,6 +59,8 @@ public:
   Tuple(const Types &...items)
       : impl::TupleBase<std::make_index_sequence<sizeof...(Types)>, Types...>(
             items...) {}
+
+  Tuple() = default;
 };
 
 template <typename... Types> Tuple(Types...) -> Tuple<Types...>;

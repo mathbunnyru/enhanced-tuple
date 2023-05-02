@@ -44,6 +44,9 @@ void test_tuple(std::string_view description) {
   std::cout << sizeof(empty) << '\n';
 
   std::cout << sizeof(TupleType<Packed, char, Packed, char>) << '\n';
+
+  TupleType<int> not_initialized;
+  std::cout << std::get<int>(not_initialized) << '\n';
 }
 
 int main() {

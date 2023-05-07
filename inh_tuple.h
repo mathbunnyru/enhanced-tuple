@@ -51,13 +51,13 @@ public:
 } // namespace impl
 
 template <typename... Types>
-class Tuple : public impl::TupleBase<std::make_index_sequence<sizeof...(Types)>,
-                                     Types...> {
+class Tuple
+    : public impl::TupleBase<std::index_sequence_for<Types...>, Types...> {
 public:
   Tuple(const Types &...items)
     requires(sizeof...(Types) > 0)
-      : impl::TupleBase<std::make_index_sequence<sizeof...(Types)>, Types...>(
-            items...) {}
+      : impl::TupleBase<std::index_sequence_for<Types...>, Types...>(items...) {
+  }
 
   Tuple() = default;
 };

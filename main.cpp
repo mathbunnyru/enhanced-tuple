@@ -50,8 +50,9 @@ void test_tuple(std::string_view description) {
 
   int x = 5;
   int y = 10;
-  TupleType<int &> ref_x(x);
-  TupleType<int &> ref_y(y);
+  int z = 20;
+  TupleType<int &, int> ref_x(x, z);
+  TupleType<int &, int> ref_y(y, z);
   ref_x = ref_y;
   std::get<int &>(ref_y) = 100;
   std::cout << x << ' ' << y << '\n';

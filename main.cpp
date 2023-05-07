@@ -58,6 +58,10 @@ void test_tuple(std::string_view description) {
 
   TupleType<> empty;
   std::cout << std::tuple_size_v<typeof(empty)> << '\n';
+
+  TupleType deducted_t(5, 3.5);
+  std::cout << std::get<int>(deducted_t) << ' ' << std::get<double>(deducted_t)
+            << '\n';
 }
 
 int main() {

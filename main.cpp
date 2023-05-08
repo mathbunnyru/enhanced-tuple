@@ -1,5 +1,6 @@
 #include "inh_tuple.h"
 #include <iostream>
+#include <memory>
 #include <string_view>
 #include <tuple>
 
@@ -63,6 +64,9 @@ void test_tuple(std::string_view description) {
   TupleType deducted_t(5, 3.5);
   std::cout << std::get<int>(deducted_t) << ' ' << std::get<double>(deducted_t)
             << '\n';
+
+  TupleType<std::unique_ptr<int>> move_only_t(std::make_unique<int>(7));
+  std::cout << *std::get<0>(move_only_t) << '\n';
 }
 
 int main() {

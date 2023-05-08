@@ -53,12 +53,8 @@ template <typename... Types>
 class Tuple
     : public impl::TupleBase<std::index_sequence_for<Types...>, Types...> {
 public:
-  Tuple(const Types&...items)
-    requires(sizeof...(Types) > 0)
-      : impl::TupleBase<std::index_sequence_for<Types...>, Types...>(items...) {
-  }
-
-  Tuple() = default;
+  using TB = impl::TupleBase<std::index_sequence_for<Types...>, Types...>;
+  using TB::TB;
 };
 
 template <typename... Types> Tuple(Types...) -> Tuple<Types...>;

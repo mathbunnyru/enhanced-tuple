@@ -11,26 +11,26 @@ namespace impl {
 
 template <size_t Index> struct GetterByIndex {
   template <typename Type>
-  static constexpr const Type &
-  get_reference(const itm::IndexedItem<Index, Type> &itm) {
+  static constexpr const Type&
+  get_reference(const itm::IndexedItem<Index, Type>& itm) {
     return itm.value;
   }
 
   template <typename Type>
-  static constexpr Type &get_reference(itm::IndexedItem<Index, Type> &itm) {
+  static constexpr Type& get_reference(itm::IndexedItem<Index, Type>& itm) {
     return itm.value;
   }
 };
 
 template <typename Type> struct GetterByType {
   template <size_t Index>
-  static constexpr const Type &
-  get_reference(const itm::IndexedItem<Index, Type> &itm) {
+  static constexpr const Type&
+  get_reference(const itm::IndexedItem<Index, Type>& itm) {
     return itm.value;
   }
 
   template <size_t Index>
-  static constexpr Type &get_reference(itm::IndexedItem<Index, Type> &itm) {
+  static constexpr Type& get_reference(itm::IndexedItem<Index, Type>& itm) {
     return itm.value;
   }
 };
@@ -42,8 +42,7 @@ class TupleBase<std::index_sequence<Is...>, Types...>
     : public itm::IndexedItem<Is, Types>... {
 public:
   template <typename... Us>
-  TupleBase(Us &&...us)
-      : itm::IndexedItem<Is, Types>{std::forward<Us>(us)}... {}
+  TupleBase(Us&&...us) : itm::IndexedItem<Is, Types>{std::forward<Us>(us)}... {}
 
   TupleBase() = default;
 };
@@ -54,7 +53,7 @@ template <typename... Types>
 class Tuple
     : public impl::TupleBase<std::index_sequence_for<Types...>, Types...> {
 public:
-  Tuple(const Types &...items)
+  Tuple(const Types&...items)
     requires(sizeof...(Types) > 0)
       : impl::TupleBase<std::index_sequence_for<Types...>, Types...>(items...) {
   }
@@ -73,22 +72,22 @@ template <class... Types> struct tuple_size<inh::Tuple<Types...>> {
 };
 
 template <size_t index, typename... Types>
-constexpr const auto &get(const inh::Tuple<Types...> &t) {
+constexpr const auto& get(const inh::Tuple<Types...>& t) {
   return inh::impl::GetterByIndex<index>::get_reference(t);
 }
 
 template <size_t index, typename... Types>
-constexpr auto &get(inh::Tuple<Types...> &t) {
+constexpr auto& get(inh::Tuple<Types...>& t) {
   return inh::impl::GetterByIndex<index>::get_reference(t);
 }
 
 template <typename Type, typename... Types>
-constexpr const auto &get(const inh::Tuple<Types...> &t) {
+constexpr const auto& get(const inh::Tuple<Types...>& t) {
   return inh::impl::GetterByType<Type>::get_reference(t);
 }
 
 template <typename Type, typename... Types>
-constexpr auto &get(inh::Tuple<Types...> &t) {
+constexpr auto& get(inh::Tuple<Types...>& t) {
   return inh::impl::GetterByType<Type>::get_reference(t);
 }
 

@@ -12,13 +12,6 @@ if(ENABLE_ASAN)
     add_link_options(-fno-omit-frame-pointer  -fsanitize=address)
 endif()
 
-option(ENABLE_TSAN "Enable Thread-Sanitizer" OFF)
-if(ENABLE_TSAN)
-    message("Enabling Tsan")
-    add_compile_options(-fno-omit-frame-pointer  -fsanitize=thread)
-    add_link_options(-fno-omit-frame-pointer  -fsanitize=thread)
-endif()
-
 option(ENABLE_UBSAN "Enable UndefinedBehavior-Sanitizer" OFF)
 if(ENABLE_UBSAN)
     message("Enabling UBsan")

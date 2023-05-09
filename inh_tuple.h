@@ -42,7 +42,8 @@ class TupleBase<std::index_sequence<Is...>, Types...>
     : public itm::IndexedItem<Is, Types>... {
 public:
   template <typename... Us>
-  TupleBase(Us&&...us) : itm::IndexedItem<Is, Types>{std::forward<Us>(us)}... {}
+  TupleBase(Us&&... us)
+      : itm::IndexedItem<Is, Types>{std::forward<Us>(us)}... {}
 
   TupleBase() = default;
 };

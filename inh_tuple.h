@@ -60,6 +60,26 @@ public:
 
 template <typename... Types> Tuple(Types...) -> Tuple<Types...>;
 
+template <size_t index, typename... Types>
+constexpr const auto& get(const inh::Tuple<Types...>& t) {
+  return inh::impl::GetterByIndex<index>::get_reference(t);
+}
+
+template <size_t index, typename... Types>
+constexpr auto& get(inh::Tuple<Types...>& t) {
+  return inh::impl::GetterByIndex<index>::get_reference(t);
+}
+
+template <typename Type, typename... Types>
+constexpr const auto& get(const inh::Tuple<Types...>& t) {
+  return inh::impl::GetterByType<Type>::get_reference(t);
+}
+
+template <typename Type, typename... Types>
+constexpr auto& get(inh::Tuple<Types...>& t) {
+  return inh::impl::GetterByType<Type>::get_reference(t);
+}
+
 } // namespace inh
 
 namespace std {
@@ -67,25 +87,5 @@ namespace std {
 template <class... Types> struct tuple_size<inh::Tuple<Types...>> {
   static constexpr auto value = sizeof...(Types);
 };
-
-template <size_t index, typename... Types>
-constexpr const auto& get(const inh::Tuple<Types...>& t) {
-  return inh::impl::GetterByIndex<index>::get_reference(t);
-}
-
-template <size_t index, typename... Types>
-constexpr auto& get(inh::Tuple<Types...>& t) {
-  return inh::impl::GetterByIndex<index>::get_reference(t);
-}
-
-template <typename Type, typename... Types>
-constexpr const auto& get(const inh::Tuple<Types...>& t) {
-  return inh::impl::GetterByType<Type>::get_reference(t);
-}
-
-template <typename Type, typename... Types>
-constexpr auto& get(inh::Tuple<Types...>& t) {
-  return inh::impl::GetterByType<Type>::get_reference(t);
-}
 
 } // namespace std

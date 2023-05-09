@@ -1,3 +1,4 @@
+#include "for_each.h"
 #include "inh_tuple.h"
 #include <iostream>
 #include <memory>
@@ -29,16 +30,16 @@ void test_tuple(std::string_view description) {
   std::cout << std::string(40, '=') << "\ntesting: " << description << '\n';
 
   TupleType<int, double, S> simple_t(0, 1.5, S{20});
-  std::get<2>(simple_t).num = 200;
-  std::cout << std::get<2>(simple_t).num << '\n';
-  std::cout << std::get<int>(simple_t) << '\n';
+  get<2>(simple_t).num = 200;
+  std::cout << get<2>(simple_t).num << '\n';
+  std::cout << get<int>(simple_t) << '\n';
 
   int i = 10;
   double j = 0.5;
   TupleType<int&, double&> ref_t(i, j);
-  std::get<0>(ref_t) = 100;
-  std::get<double&>(ref_t) = 0.7;
-  std::cout << i << ' ' << j << '\n';
+  get<0>(ref_t) = 100;
+  get<double&>(ref_t) = 0.7;
+  for_each(ref_t, [](const auto& val) { std::cout << val << '\n'; });
 
   TupleType<Empty, Empty2, Empty, Empty, Empty2> almost_empty{
       Empty{}, Empty2{}, Empty{}, Empty{}, Empty2{}};
@@ -47,7 +48,7 @@ void test_tuple(std::string_view description) {
   std::cout << sizeof(TupleType<Packed, char, Packed, char>) << '\n';
 
   TupleType<int> not_initialized;
-  std::cout << std::get<int>(not_initialized) << '\n';
+  std::cout << get<int>(not_initialized) << '\n';
 
   int x = 5;
   int y = 10;
@@ -55,7 +56,7 @@ void test_tuple(std::string_view description) {
   TupleType<int&, int> ref_x(x, z);
   TupleType<int&, int> ref_y(y, z);
   ref_x = ref_y;
-  std::get<int&>(ref_y) = 100;
+  get<int&>(ref_y) = 100;
   std::cout << x << ' ' << y << '\n';
 
   TupleType<> empty;
@@ -65,11 +66,10 @@ void test_tuple(std::string_view description) {
   std::cout << std::tuple_size_v<decltype(empty_init)> << '\n';
 
   TupleType deducted_t(5, 3.5);
-  std::cout << std::get<int>(deducted_t) << ' ' << std::get<double>(deducted_t)
-            << '\n';
+  std::cout << get<int>(deducted_t) << ' ' << get<double>(deducted_t) << '\n';
 
   TupleType<std::unique_ptr<int>> move_only_t(std::make_unique<int>(7));
-  std::cout << *std::get<0>(move_only_t) << '\n';
+  std::cout << *get<0>(move_only_t) << '\n';
 }
 
 int main() {

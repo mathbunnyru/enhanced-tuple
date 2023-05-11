@@ -11,7 +11,7 @@ template <std::size_t /* Index */, typename Type> struct IndexedItem {
 template <std::size_t Index, typename Type> struct IndexedItem<Index, Type&> {
   Type& value;
 
-  IndexedItem(Type& val) : value(val) {}
+  constexpr IndexedItem(Type& val) : value(val) {}
 
   constexpr IndexedItem(const IndexedItem&) = default;
   constexpr IndexedItem(IndexedItem&&) = default;

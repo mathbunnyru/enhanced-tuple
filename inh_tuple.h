@@ -82,10 +82,6 @@ constexpr auto& get(inh::Tuple<Types...>& t) {
 
 } // namespace inh
 
-namespace std {
-
-template <class... Types> struct tuple_size<inh::Tuple<Types...>> {
+template <class... Types> struct std::tuple_size<inh::Tuple<Types...>> {
   static constexpr auto value = sizeof...(Types);
 };
-
-} // namespace std

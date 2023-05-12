@@ -70,6 +70,9 @@ void test_tuple(std::string_view description) {
 
   TupleType<std::unique_ptr<int>> move_only_t(std::make_unique<int>(7));
   std::cout << *get<0>(move_only_t) << '\n';
+
+  std::tuple<int, int> tt(0, 1);
+  auto& [a, b] = tt;
 }
 
 int main() {

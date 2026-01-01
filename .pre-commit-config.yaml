@@ -1,12 +1,12 @@
 repos:
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: 'v21.1.8'
+    rev: '75ca4ad908dc4a99f57921f29b7e6c1521e10b26'  # frozen: v21.1.8
     hooks:
       - id: clang-format
 
   # Lint: YAML
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.37.1
+    rev: 79a6b2b1392eaf49cdd32ac4f14be1a809bbd8f7  # frozen: v1.37.1
     hooks:
       - id: yamllint
         args: ["-d {extends: relaxed, rules: {line-length: disable}}", "-s"]
